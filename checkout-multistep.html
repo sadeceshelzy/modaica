@@ -1,0 +1,322 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sipariş Tamamla — MODAICA</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/checkout.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="co-header">
+  <a href="anasayfa.html" class="co-logo">MODA<span>ICA</span></a>
+  <div class="co-secure">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+    </svg>
+    SSL Güvenli Ödeme
+  </div>
+</header>
+
+<!-- ADIM GÖSTERGESİ -->
+<div class="co-steps-wrap">
+  <div class="co-steps">
+    <div class="co-step active" id="step-ind-1">
+      <div class="co-step-num">1</div>
+      <div class="co-step-label">Adres</div>
+    </div>
+    <div class="co-step-line"></div>
+    <div class="co-step" id="step-ind-2">
+      <div class="co-step-num">2</div>
+      <div class="co-step-label">Kargo</div>
+    </div>
+    <div class="co-step-line"></div>
+    <div class="co-step" id="step-ind-3">
+      <div class="co-step-num">3</div>
+      <div class="co-step-label">Ödeme</div>
+    </div>
+    <div class="co-step-line"></div>
+    <div class="co-step" id="step-ind-4">
+      <div class="co-step-num">4</div>
+      <div class="co-step-label">Onay</div>
+    </div>
+  </div>
+</div>
+
+<div class="co-layout">
+
+  <!-- FORM ALANI -->
+  <main class="co-main">
+
+    <!-- ─── ADIM 1: TESLİMAT ADRESİ ─── -->
+    <div class="co-pane active" id="pane-1">
+      <h2 class="co-pane-title">📍 Teslimat Adresi</h2>
+
+      <!-- Kayıtlı adresler -->
+      <div id="saved-addresses"></div>
+
+      <!-- Yeni adres formu -->
+      <div class="co-card" id="new-addr-card">
+        <div class="co-card-head" onclick="toggleNewAddr()">
+          <span class="co-card-icon">➕</span>
+          <strong>Yeni Adres Ekle</strong>
+          <span id="new-addr-toggle" style="margin-left:auto;color:#6b7280;font-size:20px;">›</span>
+        </div>
+        <div id="new-addr-form" style="display:none;padding:18px 0 4px;">
+          <div class="co-field-row">
+            <div class="co-field">
+              <label>Ad Soyad *</label>
+              <input id="af-name" placeholder="Ad Soyad">
+            </div>
+            <div class="co-field">
+              <label>Telefon *</label>
+              <input id="af-phone" placeholder="+90 555 000 0000" type="tel">
+            </div>
+          </div>
+          <div class="co-field">
+            <label>Adres Başlığı *</label>
+            <input id="af-title" placeholder="Ev, İş...">
+          </div>
+          <div class="co-field-row">
+            <div class="co-field">
+              <label>İl *</label>
+              <select id="af-city" onchange="loadDistricts(this.value)">
+                <option value="">İl seçin...</option>
+              </select>
+            </div>
+            <div class="co-field">
+              <label>İlçe *</label>
+              <select id="af-district">
+                <option value="">Önce il seçin</option>
+              </select>
+            </div>
+          </div>
+          <div class="co-field">
+            <label>Açık Adres *</label>
+            <textarea id="af-address" rows="2" placeholder="Mahalle, cadde, sokak, kapı no..."></textarea>
+          </div>
+          <div class="co-field">
+            <label>Posta Kodu</label>
+            <input id="af-zip" placeholder="34000" maxlength="5" style="max-width:160px;">
+          </div>
+          <button class="co-btn-outline" onclick="saveNewAddress()" style="margin-top:4px;">💾 Adresi Kaydet</button>
+        </div>
+      </div>
+
+      <button class="co-btn-primary" onclick="goStep(2)" style="margin-top:20px;">
+        Kargo Seçimine Geç →
+      </button>
+    </div>
+
+    <!-- ─── ADIM 2: KARGO ─── -->
+    <div class="co-pane" id="pane-2">
+      <h2 class="co-pane-title">🚚 Kargo Seçeneği</h2>
+
+      <div class="co-cargo-options">
+        <label class="co-cargo-opt" id="cargo-standard">
+          <input type="radio" name="cargo" value="standard" checked onchange="updateSummary()">
+          <div class="co-cargo-info">
+            <div class="co-cargo-name">📦 Standart Kargo</div>
+            <div class="co-cargo-sub">Yurtiçi Kargo · 2-5 iş günü</div>
+          </div>
+          <div class="co-cargo-price" id="std-price">₺39,90</div>
+        </label>
+        <label class="co-cargo-opt" id="cargo-fast">
+          <input type="radio" name="cargo" value="fast" onchange="updateSummary()">
+          <div class="co-cargo-info">
+            <div class="co-cargo-name">⚡ Hızlı Kargo</div>
+            <div class="co-cargo-sub">MNG Kargo · 1-2 iş günü</div>
+          </div>
+          <div class="co-cargo-price">₺59,90</div>
+        </label>
+        <label class="co-cargo-opt" id="cargo-sameday">
+          <input type="radio" name="cargo" value="sameday" onchange="updateSummary()">
+          <div class="co-cargo-info">
+            <div class="co-cargo-name">🚀 Aynı Gün Teslimat</div>
+            <div class="co-cargo-sub">Sadece İstanbul · Bugün teslim</div>
+          </div>
+          <div class="co-cargo-price">₺99,90</div>
+        </label>
+      </div>
+
+      <!-- Sipariş notu -->
+      <div class="co-card" style="margin-top:16px;">
+        <div class="co-field" style="margin-bottom:0;">
+          <label>📝 Sipariş Notu (isteğe bağlı)</label>
+          <textarea id="order-note" rows="2" class="co-input" placeholder="Kurye için özel bir notunuz var mı?"></textarea>
+        </div>
+      </div>
+
+      <div class="co-btn-row">
+        <button class="co-btn-outline" onclick="goStep(1)">← Adrese Dön</button>
+        <button class="co-btn-primary" onclick="goStep(3)">Ödeme Adımına Geç →</button>
+      </div>
+    </div>
+
+    <!-- ─── ADIM 3: ÖDEME ─── -->
+    <div class="co-pane" id="pane-3">
+      <h2 class="co-pane-title">💳 Ödeme</h2>
+
+      <!-- Ödeme yöntemi seçimi -->
+      <div class="co-payment-methods">
+        <label class="co-pay-method active" id="pm-card">
+          <input type="radio" name="payment" value="card" checked onchange="switchPayment('card')">
+          <span>💳</span> Kredi / Banka Kartı
+        </label>
+        <label class="co-pay-method" id="pm-transfer">
+          <input type="radio" name="payment" value="transfer" onchange="switchPayment('transfer')">
+          <span>🏦</span> Havale / EFT
+        </label>
+        <label class="co-pay-method" id="pm-door">
+          <input type="radio" name="payment" value="door" onchange="switchPayment('door')">
+          <span>🚪</span> Kapıda Ödeme
+        </label>
+      </div>
+
+      <!-- Kart formu -->
+      <div id="payment-card-form" class="co-card" style="padding:22px;">
+        <!-- Kart önizleme -->
+        <div class="card-preview" id="cardPreview">
+          <div style="font-size:22px;letter-spacing:2px;margin-bottom:16px;opacity:.7;">▬▬ ▬▬▬</div>
+          <div class="card-num" id="cardNumPrev">•••• •••• •••• ••••</div>
+          <div style="display:flex;gap:32px;margin-top:18px;">
+            <div><div style="font-size:9px;opacity:.55;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;">Kart Sahibi</div><div class="card-holder" id="cardHolderPrev">AD SOYAD</div></div>
+            <div><div style="font-size:9px;opacity:.55;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;">Son Kul.</div><div class="card-exp" id="cardExpPrev">AA/YY</div></div>
+          </div>
+        </div>
+        <div class="co-field-row" style="margin-top:18px;">
+          <div class="co-field" style="flex:2">
+            <label>Kart Numarası *</label>
+            <input id="card-num" class="co-input" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric" autocomplete="cc-number" oninput="formatCardNum(this)">
+          </div>
+          <div class="co-field" style="flex:1;">
+            <label>Son Kul. *</label>
+            <input id="card-exp" class="co-input" placeholder="AA/YY" maxlength="5" inputmode="numeric" autocomplete="cc-exp" oninput="formatExp(this)">
+          </div>
+        </div>
+        <div class="co-field-row">
+          <div class="co-field" style="flex:2">
+            <label>Kart Sahibi *</label>
+            <input id="card-name" class="co-input" placeholder="AD SOYAD" autocomplete="cc-name" oninput="document.getElementById('cardHolderPrev').textContent=this.value.toUpperCase()||'AD SOYAD';this.value=this.value.toUpperCase()">
+          </div>
+          <div class="co-field" style="flex:1;">
+            <label>CVV *</label>
+            <div style="position:relative;">
+              <input id="card-cvv" class="co-input" type="password" placeholder="•••" maxlength="4" inputmode="numeric" autocomplete="cc-csc">
+              <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af;cursor:help;" title="Kartın arkasındaki 3-4 haneli kod">?</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+          <svg fill="none" stroke="#22c55e" viewBox="0 0 24 24" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <span style="font-size:12px;color:#6b7280;">256-bit SSL ile şifrelenmiş güvenli ödeme</span>
+        </div>
+      </div>
+
+      <!-- Havale bilgileri -->
+      <div id="payment-transfer-form" class="co-card" style="display:none;padding:22px;">
+        <p style="font-size:14px;color:#374151;line-height:1.7;margin-bottom:16px;">Sipariş verdikten sonra aşağıdaki hesaba transfer yapın. Ödeme onaylandıktan sonra siparişiniz hazırlanacaktır.</p>
+        <div class="co-transfer-info">
+          <div><span>Banka</span><strong>Ziraat Bankası</strong></div>
+          <div><span>Hesap Sahibi</span><strong>MODAICA Ticaret A.Ş.</strong></div>
+          <div><span>IBAN</span><strong>TR00 0000 0000 0000 0000 0000 00</strong></div>
+          <div><span>Açıklama</span><strong id="transfer-desc">Sipariş No (siparişten sonra)</strong></div>
+        </div>
+      </div>
+
+      <!-- Kapıda ödeme -->
+      <div id="payment-door-form" class="co-card" style="display:none;padding:22px;">
+        <div style="font-size:32px;text-align:center;margin-bottom:12px;">🚪</div>
+        <p style="text-align:center;color:#374151;font-size:14px;">Kapıda nakit veya kartla ödeme yapabilirsiniz.</p>
+        <p style="text-align:center;color:#6b7280;font-size:13px;margin-top:8px;">+₺5,00 kapıda ödeme ücreti uygulanır.</p>
+      </div>
+
+      <div class="co-btn-row">
+        <button class="co-btn-outline" onclick="goStep(2)">← Kargoya Dön</button>
+        <button class="co-btn-primary" onclick="goStep(4)">Siparişi Onayla →</button>
+      </div>
+    </div>
+
+    <!-- ─── ADIM 4: ONAY / ÖZET ─── -->
+    <div class="co-pane" id="pane-4">
+      <h2 class="co-pane-title">✅ Sipariş Özeti</h2>
+
+      <div class="co-card">
+        <div class="co-confirm-row"><span>📍 Teslimat Adresi</span><strong id="confirm-addr">—</strong></div>
+        <div class="co-confirm-row"><span>🚚 Kargo</span><strong id="confirm-cargo">—</strong></div>
+        <div class="co-confirm-row"><span>💳 Ödeme</span><strong id="confirm-payment">—</strong></div>
+      </div>
+
+      <!-- Ürünler -->
+      <div class="co-card" style="margin-top:12px;">
+        <div id="confirm-items"></div>
+      </div>
+
+      <!-- Son özet -->
+      <div class="co-card" style="margin-top:12px;" id="final-summary"></div>
+
+      <label class="co-checkbox">
+        <input type="checkbox" id="kvkk-check">
+        <span><a href="#" style="color:#2d3aaa;font-weight:600;">Satış Sözleşmesi</a>'ni ve <a href="#" style="color:#2d3aaa;font-weight:600;">KVKK Aydınlatma Metni</a>'ni okudum, onaylıyorum.</span>
+      </label>
+
+      <div class="co-btn-row">
+        <button class="co-btn-outline" onclick="goStep(3)">← Ödemeye Dön</button>
+        <button class="co-btn-primary co-btn-green" id="place-order-btn" onclick="placeOrder()">
+          🎉 Siparişi Ver — <span id="total-price-btn">₺0,00</span>
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SEPET ÖZETİ (sabit sidebar) -->
+  <aside class="co-sidebar">
+    <div class="co-sidebar-inner">
+      <h3>🛒 Sepet Özeti</h3>
+
+      <!-- Ürünler -->
+      <div id="sidebar-items" class="co-sidebar-items"></div>
+
+      <!-- Kupon -->
+      <div class="co-coupon">
+        <input id="coupon-input" placeholder="Kupon kodu" class="co-input" style="font-size:13px;padding:9px 12px;">
+        <button onclick="applyCoupon()" id="coupon-btn">Uygula</button>
+      </div>
+      <div id="coupon-msg" style="font-size:12px;margin-top:6px;display:none;"></div>
+
+      <!-- Özet satırları -->
+      <div class="co-summary-rows" id="summary-rows"></div>
+
+      <!-- Kargo bilgisi -->
+      <div id="free-cargo-notice" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 12px;font-size:12px;color:#166834;font-weight:600;margin-top:10px;">
+        🎉 Ücretsiz kargo eşiğini aştınız!
+      </div>
+      <div id="cargo-progress-wrap" style="display:none;margin-top:10px;">
+        <div style="font-size:12px;color:#6b7280;margin-bottom:5px;">Ücretsiz kargo için <strong id="cargo-remaining"></strong> kaldı</div>
+        <div style="background:#e5e7eb;border-radius:4px;height:6px;overflow:hidden;"><div id="cargo-bar" style="background:#22c55e;height:100%;border-radius:4px;transition:width .4s;"></div></div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- BAŞARI MODAL -->
+<div id="success-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:20px;padding:40px;text-align:center;max-width:440px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.2);">
+    <div style="font-size:64px;margin-bottom:16px;">🎉</div>
+    <h2 style="font-size:22px;font-weight:700;margin-bottom:8px;">Siparişiniz Alındı!</h2>
+    <p style="color:#6b7280;margin-bottom:8px;">Sipariş numaranız:</p>
+    <div id="success-code" style="font-size:22px;font-weight:900;color:#1a1f5e;letter-spacing:1px;margin-bottom:16px;"></div>
+    <p style="font-size:13px;color:#6b7280;margin-bottom:24px;">Onay e-postası adresinize gönderildi. Siparişinizi takip etmek için aşağıdaki butona tıklayın.</p>
+    <div id="loyalty-earned" style="display:none;background:#fef9c3;border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:13px;color:#92400e;font-weight:600;"></div>
+    <a id="track-link" href="#" style="display:block;background:#1a1f5e;color:white;padding:14px;border-radius:12px;font-weight:700;text-decoration:none;font-size:15px;">📦 Siparişimi Takip Et</a>
+    <a href="anasayfa.html" style="display:block;margin-top:10px;color:#6b7280;font-size:13px;">Ana Sayfaya Dön</a>
+  </div>
+</div>
+
+<script src="js/checkout.js"></script>
+</body>
+</html>

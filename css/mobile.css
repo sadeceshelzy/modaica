@@ -1,0 +1,425 @@
+/* =============================================
+   MODAICA — Global Mobile Responsive CSS
+   Tüm sayfalara head.php üzerinden yüklenir
+   ============================================= */
+
+/* ── MOBİL HEADER DÜZELTME ────────────────────── */
+@media (max-width: 768px) {
+  /* Topbar küçült */
+  .topbar {
+    font-size: 11px;
+    padding: 6px 14px;
+    gap: 8px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Header iki satıra: logo + hamburger üstte, search altta */
+  .header-inner {
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 22px !important;
+    flex: 1;
+  }
+
+  /* Masaüstü icon butonlarını gizle (alt navda gösterilecek) */
+  .header-icons {
+    display: none !important;
+  }
+
+  /* Search bar tam genişlik, ikinci satır */
+  .search-bar {
+    order: 3;
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  /* Desktop nav gizle */
+  nav {
+    display: none !important;
+  }
+
+  /* Sayfa altına boşluk — alt nav barı için */
+  body {
+    padding-bottom: 68px;
+  }
+
+  /* Footer linkleri grid olarak daralt */
+  .footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    padding: 30px 16px 20px !important;
+    gap: 20px !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    padding: 14px 16px !important;
+  }
+
+  /* Toast mobile'da yukarıda değil aşağıda (alt nav üstünde) */
+  .toast {
+    bottom: 80px !important;
+    left: 14px !important;
+    right: 14px !important;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar { display: none; }
+
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .footer-brand {
+    grid-column: 1 !important;
+  }
+}
+
+/* ── HAMBURGEr BUTONU ─────────────────────────── */
+.mob-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--primary, #1a1f5e);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background .2s;
+}
+.mob-menu-btn:hover { background: var(--light, #f8f9fc); }
+.mob-menu-btn svg { width: 24px; height: 24px; }
+
+@media (max-width: 768px) {
+  .mob-menu-btn { display: flex; }
+}
+
+/* ── MOBİL DRAWER (SIDEBAR) ──────────────────── */
+.mob-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 9000;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.mob-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+.mob-drawer {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100dvh;
+  background: #fff;
+  z-index: 9001;
+  display: flex;
+  flex-direction: column;
+  transition: left .3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 4px 0 30px rgba(0,0,0,.18);
+  overflow-y: auto;
+}
+.mob-drawer.open { left: 0; }
+
+.mob-drawer-head {
+  background: var(--primary, #1a1f5e);
+  padding: 20px 16px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.mob-drawer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1px;
+  text-decoration: none;
+}
+.mob-drawer-logo span { color: #e63946; }
+
+.mob-drawer-close {
+  background: rgba(255,255,255,.15);
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: background .2s;
+}
+.mob-drawer-close:hover { background: rgba(255,255,255,.25); }
+
+.mob-drawer-user {
+  padding: 14px 16px;
+  background: var(--light, #f8f9fc);
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  flex-shrink: 0;
+}
+.mob-drawer-user a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text, #1c1c2e);
+  font-weight: 600;
+  font-size: 14px;
+}
+.mob-drawer-user svg { width: 20px; height: 20px; color: var(--primary, #1a1f5e); }
+
+.mob-drawer-nav {
+  flex: 1;
+  padding: 8px 0;
+}
+.mob-drawer-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text, #1c1c2e);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  transition: background .15s, color .15s;
+}
+.mob-drawer-nav a:hover { background: var(--light, #f8f9fc); color: var(--accent, #2d3aaa); }
+.mob-drawer-nav a .nav-emoji { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+
+.mob-drawer-sep {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 12px 20px 4px;
+}
+
+.mob-drawer-footer {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border, #e5e7eb);
+  flex-shrink: 0;
+}
+.mob-drawer-footer p {
+  font-size: 11px;
+  color: var(--muted, #6b7280);
+  text-align: center;
+}
+
+/* ── MOBİL ALT NAVİGASYON BARI ───────────────── */
+.mob-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 62px;
+  background: #fff;
+  border-top: 1px solid var(--border, #e5e7eb);
+  z-index: 8000;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.08);
+}
+
+@media (max-width: 768px) {
+  .mob-bottom-nav { display: flex; }
+}
+
+.mob-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--muted, #6b7280);
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  padding: 4px 12px;
+  border-radius: 10px;
+  transition: color .2s;
+  position: relative;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+.mob-nav-item.active,
+.mob-nav-item:hover { color: var(--primary, #1a1f5e); }
+
+.mob-nav-item svg { width: 22px; height: 22px; }
+
+.mob-nav-badge {
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  background: #e63946;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+/* ── SAYFA BAZLI MOBİL DÜZELTMELERİ ─────────── */
+
+/* Ürün grid — tüm listing sayfaları */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .product-img { height: 170px !important; }
+  .product-name { font-size: 12px !important; }
+  .price { font-size: 15px !important; }
+  .add-cart { padding: 7px 10px !important; font-size: 10px !important; }
+}
+@media (max-width: 360px) {
+  .product-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Sepet sayfası */
+@media (max-width: 768px) {
+  .cart-layout {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  .cart-summary {
+    position: static !important;
+    width: 100% !important;
+  }
+}
+
+/* Ürün detay sayfası */
+@media (max-width: 768px) {
+  .product-layout {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .main-img { height: 300px !important; }
+}
+
+/* Checkout sayfası */
+@media (max-width: 768px) {
+  .checkout-grid,
+  .checkout-layout {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  .checkout-sidebar,
+  .order-summary-box {
+    position: static !important;
+    width: 100% !important;
+  }
+}
+
+/* Hesabım sayfası */
+@media (max-width: 768px) {
+  .account-layout {
+    flex-direction: column !important;
+  }
+  .account-sidebar {
+    width: 100% !important;
+    position: static !important;
+  }
+}
+
+/* Arama sayfası */
+@media (max-width: 768px) {
+  .search-layout {
+    flex-direction: column !important;
+  }
+  .search-filters {
+    width: 100% !important;
+    position: static !important;
+  }
+  .filter-toggle-btn { display: flex !important; }
+  .filter-panel { display: none; }
+  .filter-panel.open { display: block !important; }
+}
+
+/* Sale banner */
+@media (max-width: 768px) {
+  .sale-banner {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 24px 20px !important;
+  }
+  .sale-text h2 { font-size: 22px !important; }
+  .timer-boxes { justify-content: center; }
+}
+
+/* Newsletter */
+@media (max-width: 768px) {
+  .newsletter { padding: 36px 16px !important; }
+  .newsletter h2 { font-size: 22px !important; }
+  .newsletter-form {
+    flex-direction: column !important;
+    border-radius: 10px !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    gap: 8px;
+  }
+  .newsletter-form input {
+    border-radius: 8px !important;
+    border: 2px solid rgba(255,255,255,.3) !important;
+  }
+  .newsletter-form button {
+    border-radius: 8px !important;
+    width: 100%;
+  }
+}
+
+/* Hero slider */
+@media (max-width: 768px) {
+  .slide { height: 300px !important; }
+  .slide-content { padding: 0 20px !important; }
+  .slide-title { font-size: 28px !important; line-height: 1.15 !important; }
+  .slide-desc { font-size: 13px !important; margin-bottom: 16px !important; }
+  .btn-primary, .btn-outline { padding: 10px 18px !important; font-size: 13px !important; }
+  .slide-visual, .float-cards { display: none !important; }
+  .slide-cats { display: none !important; }
+  .slide-badge { font-size: 10px !important; top: 12px !important; right: 12px !important; }
+}
+
+/* Genel section padding */
+@media (max-width: 768px) {
+  .section { padding: 32px 14px !important; }
+  .section-title { font-size: 22px !important; }
+  .main-wrap { padding: 20px 14px 60px !important; }
+}
+
+/* Kategori kartları */
+@media (max-width: 768px) {
+  .cat-master-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .banner-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+}
+
+/* Sipariş takip */
+@media (max-width: 768px) {
+  .track-layout { flex-direction: column !important; }
+}

@@ -1,0 +1,48 @@
+Options -Indexes
+DirectoryIndex anasayfa.html index.php
+RewriteEngine On
+
+# ── API Alias: /modaica/api/* → /modaica/backend/api/* ───────
+RewriteRule ^api/(.*)$ backend/api/$1 [L,QSA]
+
+# ── PHP Hata Gösterimi Kapat (production) ────────────────────
+php_flag display_errors Off
+php_flag log_errors On
+
+# ── PHP ile HTML işle (include desteği için) ──────────────────
+AddType application/x-httpd-php .html
+
+# ── Güvenlik Başlıkları ───────────────────────────────────────
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  # İçerik Güvenlik Politikası (inline script/style kullanımı nedeniyle unsafe-inline gerekli)
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://picsum.photos; connect-src 'self' http://localhost http://localhost:8080 http://localhost:3000 http://127.0.0.1 http://127.0.0.1:8080 http://localhost:5000; frame-ancestors 'none';"
+  Header always unset X-Powered-By
+</IfModule>
+
+# ── Backend Yapılandırma Klasörlerine Direkt Erişimi Engelle ──
+<IfModule mod_rewrite.c>
+  RewriteRule ^backend/config/secrets\.php$ - [F,L]
+  RewriteRule ^backend/config/(.*)$         - [F,L]
+  RewriteRule ^backend/helpers/(.*)$        - [F,L]
+</IfModule>
+
+# ── Statik dosya cache (geliştirme ortamı: JS/CSS önbelleğe alınmıyor) ──
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                "access plus 0 seconds"
+  ExpiresByType application/javascript  "access plus 0 seconds"
+  ExpiresByType image/png               "access plus 1 month"
+  ExpiresByType image/jpeg              "access plus 1 month"
+  ExpiresByType image/svg+xml           "access plus 1 month"
+</IfModule>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+</IfModule>

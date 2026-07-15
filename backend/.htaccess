@@ -1,0 +1,43 @@
+Options -Indexes
+RewriteEngine On
+
+# ── Authorization header'ı PHP'ye ilet (Apache varsayılan olarak kesiyor) ─
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# ── PHP Hata Gösterimi Kapat (production) ────────────────────
+php_flag display_errors Off
+php_flag log_errors On
+
+# ── Güvenlik Başlıkları ───────────────────────────────────────
+<IfModule mod_headers.c>
+  # Tarayıcı MIME sniffing koruması
+  Header always set X-Content-Type-Options "nosniff"
+  # Clickjacking koruması
+  Header always set X-Frame-Options "DENY"
+  Header always set Content-Security-Policy "frame-ancestors 'none'"
+  # Referrer gizliliği
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  # İzin verilmeyen tarayıcı özelliklerini kapat
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  # Hassas bilgileri yanıttan kaldır
+  Header always unset X-Powered-By
+  Header always unset Server
+</IfModule>
+
+# ── Config & Helpers Klasörlerine Direkt Erişimi Engelle ──────
+<IfModule mod_rewrite.c>
+  RewriteRule ^config/(.*)$  - [F,L]
+  RewriteRule ^helpers/(.*) - [F,L]
+</IfModule>
+
+# ── Routing ────────────────────────────────────────────────────
+# Tüm /api/* isteklerini ilgili index.php'ye yönlendir
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^api/([^/]+)(/.*)?$ api/$1/index.php [L,QSA]
+
+# Vendor Panel API
+RewriteRule ^vendor-api/(.*)$ api/vendor/index.php [L,QSA]
+
+# JSON hata sayfaları
+ErrorDocument 404 /modaica/backend/error.php
+ErrorDocument 500 /modaica/backend/error.php

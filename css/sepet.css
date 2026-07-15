@@ -1,0 +1,633 @@
+/* =============================================
+   MODAICA — Sepet Sayfası CSS
+   ============================================= */
+
+:root {
+  --primary:  #1a1f5e;
+  --accent:   #2d3aaa;
+  --accent2:  #e63946;
+  --gold:     #f4a226;
+  --light:    #f8f9fc;
+  --white:    #ffffff;
+  --text:     #1c1c2e;
+  --muted:    #6b7280;
+  --border:   #e5e7eb;
+  --success:  #22c55e;
+  --rad:      14px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--light);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── TOPBAR ─────────────────────────────────── */
+.topbar {
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  font-size: 13px;
+  padding: 8px 0;
+  letter-spacing: 0.4px;
+}
+.topbar span { color: var(--gold); font-weight: 600; }
+
+/* ── HEADER ─────────────────────────────────── */
+header {
+  background: white;
+  box-shadow: 0 2px 20px rgba(0,0,0,.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.header-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -1px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.logo span { color: var(--accent2); }
+
+.search-bar {
+  flex: 1;
+  display: flex;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.search-bar:focus-within { border-color: var(--accent); }
+.search-bar input {
+  flex: 1; border: none; outline: none;
+  padding: 11px 18px; font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+}
+.search-bar button {
+  background: var(--primary); border: none;
+  color: white; padding: 0 20px;
+  cursor: pointer; transition: background .2s;
+}
+.search-bar button:hover { background: var(--accent); }
+
+.header-icons { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+.icon-btn {
+  position: relative; cursor: pointer;
+  display: flex; flex-direction: column;
+  align-items: center; color: var(--text);
+  text-decoration: none; gap: 3px;
+}
+.icon-btn svg { width: 22px; height: 22px; }
+.icon-btn > span { font-size: 11px; color: var(--muted); }
+.hdr-badge {
+  position: absolute; top: -6px; right: -8px;
+  background: var(--accent2); color: white;
+  font-size: 10px; font-weight: 700;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: none; align-items: center; justify-content: center;
+}
+
+/* ── NAV ────────────────────────────────────── */
+nav { background: var(--primary); }
+.nav-inner {
+  max-width: 1300px; margin: 0 auto;
+  display: flex; align-items: stretch;
+}
+.nav-item > a {
+  display: flex; align-items: center; gap: 5px;
+  padding: 14px 18px; color: white;
+  text-decoration: none; font-size: 14px;
+  font-weight: 500; white-space: nowrap;
+  transition: background .2s;
+}
+.nav-item > a:hover { background: rgba(255,255,255,.12); }
+.nav-item.active-nav > a { background: rgba(255,255,255,.18); }
+
+/* ── BREADCRUMB ─────────────────────────────── */
+.breadcrumb-bar {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+}
+.breadcrumb {
+  max-width: 1300px; margin: 0 auto;
+  display: flex; align-items: center;
+  gap: 8px; font-size: 13px; color: var(--muted);
+}
+.breadcrumb a { color: var(--muted); text-decoration: none; transition: color .2s; }
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb .current { color: var(--text); font-weight: 600; }
+
+/* ── ADIM GÖSTERGESI ────────────────────────── */
+.steps-bar {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px;
+}
+.steps {
+  max-width: 1300px; margin: 0 auto;
+  display: flex; align-items: center;
+  gap: 0;
+}
+.step {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 600;
+  color: var(--muted);
+}
+.step.active { color: var(--primary); }
+.step.done   { color: var(--success); }
+.step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+}
+.step.active .step-num { background: var(--primary); color: white; }
+.step.done   .step-num { background: var(--success); color: white; }
+.step-line {
+  flex: 1; height: 2px;
+  background: var(--border);
+  margin: 0 12px;
+}
+.step.done + .step-line { background: var(--success); }
+
+/* ── ANA LAYOUT ─────────────────────────────── */
+.page-wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 36px 20px 60px;
+}
+
+/* ── SEPET LAYOUT ───────────────────────────── */
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ── PANEL ORTAK ────────────────────────────── */
+.panel {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06);
+  overflow: hidden;
+}
+.panel-header {
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  justify-content: space-between;
+}
+.panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+}
+.panel-title svg { width: 22px; height: 22px; color: var(--accent); }
+.panel-body { padding: 24px 28px; }
+
+/* ── SEPET ÜRÜN KARTI ───────────────────────── */
+.cart-items { display: flex; flex-direction: column; gap: 0; }
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border);
+  transition: background .2s;
+  animation: itemIn .35s ease both;
+}
+@keyframes itemIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.cart-item:last-child { border-bottom: none; }
+.cart-item:hover { background: #fafbff; }
+
+/* Ürün resim */
+.ci-img {
+  width: 100px; height: 100px;
+  border-radius: 12px;
+  background: var(--light);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  flex-shrink: 0;
+}
+.ci-img img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Ürün bilgi */
+.ci-info { min-width: 0; }
+.ci-cat  { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.ci-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; line-height: 1.3; }
+.ci-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.ci-variant {
+  font-size: 12px; color: var(--muted);
+  background: var(--light);
+  padding: 3px 10px; border-radius: 20px;
+}
+.ci-actions { display: flex; align-items: center; gap: 10px; }
+.ci-fav-btn, .ci-del-btn {
+  background: none; border: none;
+  cursor: pointer; padding: 4px;
+  display: flex; align-items: center;
+  gap: 5px; font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--muted); transition: color .2s;
+}
+.ci-fav-btn:hover { color: var(--accent2); }
+.ci-del-btn:hover { color: var(--accent2); }
+.ci-fav-btn svg, .ci-del-btn svg { width: 15px; height: 15px; }
+
+/* Fiyat & miktar */
+.ci-right {
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 14px;
+  flex-shrink: 0;
+}
+.ci-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--primary);
+}
+.ci-price-old {
+  font-size: 13px; color: var(--muted);
+  text-decoration: line-through;
+  display: block; text-align: right;
+  margin-top: -10px;
+}
+
+/* Adet kontrolü */
+.qty-ctrl {
+  display: flex; align-items: center; gap: 0;
+  border: 2px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+}
+.qty-btn {
+  width: 34px; height: 34px;
+  background: none; border: none;
+  cursor: pointer; font-size: 18px;
+  display: flex; align-items: center;
+  justify-content: center;
+  color: var(--text); transition: all .15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.qty-btn:hover { background: var(--light); color: var(--accent); }
+.qty-btn:disabled { opacity: .35; cursor: not-allowed; }
+.qty-val {
+  width: 38px; height: 34px;
+  text-align: center; border: none;
+  outline: none; font-size: 14px;
+  font-weight: 700; font-family: 'DM Sans', sans-serif;
+  border-left: 2px solid var(--border);
+  border-right: 2px solid var(--border);
+  background: white;
+}
+
+/* ── SEPET ALT BÖLÜM ────────────────────────── */
+.cart-footer {
+  padding: 18px 28px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center;
+  justify-content: space-between;
+  background: var(--light);
+  border-radius: 0 0 20px 20px;
+}
+.select-all {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; color: var(--text);
+}
+.select-all input[type=checkbox] {
+  width: 16px; height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.clear-selected {
+  background: none; border: none;
+  color: var(--accent2); font-size: 13px;
+  font-weight: 600; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; gap: 5px;
+  transition: opacity .2s;
+}
+.clear-selected:hover { opacity: .75; }
+.clear-selected svg { width: 15px; height: 15px; }
+
+/* ── KUPON KODU ─────────────────────────────── */
+.coupon-row {
+  display: flex; gap: 0;
+  border: 2px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+  transition: border-color .2s;
+  margin-bottom: 20px;
+}
+.coupon-row:focus-within { border-color: var(--accent); }
+.coupon-input {
+  flex: 1; border: none; outline: none;
+  padding: 12px 16px; font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 1px;
+}
+.coupon-btn {
+  background: var(--primary); color: white;
+  border: none; padding: 0 20px;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: background .2s; white-space: nowrap;
+}
+.coupon-btn:hover { background: var(--accent); }
+.coupon-msg {
+  font-size: 12px; margin-top: -14px;
+  margin-bottom: 16px; padding-left: 4px;
+  display: none;
+}
+.coupon-msg.success { color: var(--success); display: block; }
+.coupon-msg.error   { color: var(--accent2); display: block; }
+
+/* ── ÖZET KARTI ─────────────────────────────── */
+.summary-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06);
+  position: sticky;
+  top: 90px;
+  overflow: hidden;
+}
+.summary-header {
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--border);
+}
+.summary-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+}
+.summary-body { padding: 24px 28px; }
+
+.summary-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 14px;
+}
+.summary-row .label { color: var(--muted); }
+.summary-row .value { font-weight: 600; }
+.summary-row.discount .value { color: var(--success); }
+.summary-row.coupon-row-s .value { color: var(--accent2); }
+.summary-divider { height: 1px; background: var(--border); margin: 10px 0; }
+.summary-total {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 16px 0 0;
+}
+.summary-total .label {
+  font-size: 16px; font-weight: 700;
+}
+.summary-total .value {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--primary);
+}
+
+.checkout-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white; border: none;
+  padding: 16px; border-radius: 12px;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .25s; margin-top: 20px;
+  display: flex; align-items: center;
+  justify-content: center; gap: 10px;
+  box-shadow: 0 6px 20px rgba(26,31,94,.25);
+}
+.checkout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(26,31,94,.3);
+}
+.checkout-btn svg { width: 20px; height: 20px; }
+
+.secure-note {
+  display: flex; align-items: center;
+  justify-content: center; gap: 6px;
+  font-size: 12px; color: var(--muted);
+  margin-top: 14px;
+}
+.secure-note svg { width: 14px; height: 14px; color: var(--success); }
+
+/* ── KARGO SEÇENEKLERİ ──────────────────────── */
+.shipping-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.shipping-opt {
+  display: flex; align-items: center; gap: 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px; padding: 13px 16px;
+  cursor: pointer; transition: all .2s;
+}
+.shipping-opt:hover { border-color: var(--accent); }
+.shipping-opt.selected {
+  border-color: var(--accent);
+  background: rgba(45,58,170,.04);
+}
+.shipping-opt input[type=radio] { accent-color: var(--accent); flex-shrink: 0; }
+.so-icon {
+  width: 36px; height: 36px;
+  background: var(--light); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 18px;
+}
+.so-info { flex: 1; }
+.so-name { font-size: 14px; font-weight: 600; }
+.so-desc { font-size: 12px; color: var(--muted); }
+.so-price { font-size: 14px; font-weight: 700; color: var(--primary); }
+.so-free  { color: var(--success); }
+
+/* ── ÖNERİLEN ÜRÜNLER ───────────────────────── */
+.suggested {
+  margin-top: 28px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06);
+  overflow: hidden;
+}
+.suggested-header {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+}
+.suggested-header svg { width: 20px; height: 20px; color: var(--gold); }
+.suggested-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.sg-card {
+  padding: 18px;
+  border-right: 1px solid var(--border);
+  cursor: pointer; transition: background .2s;
+  text-align: center;
+}
+.sg-card:last-child { border-right: none; }
+.sg-card:hover { background: var(--light); }
+.sg-img {
+  width: 80px; height: 80px;
+  border-radius: 10px; background: var(--light);
+  margin: 0 auto 10px;
+  display: flex; align-items: center;
+  justify-content: center; font-size: 36px;
+  border: 1px solid var(--border);
+}
+.sg-name  { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+.sg-price { font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+.sg-add {
+  width: 100%; background: var(--light);
+  border: 1.5px solid var(--border);
+  border-radius: 6px; padding: 6px;
+  font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .2s; color: var(--text);
+}
+.sg-add:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* ── BOŞ DURUM ──────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  animation: fadeUp .5s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.empty-icon {
+  width: 100px; height: 100px;
+  background: linear-gradient(135deg, #e8eaff, #d4d9ff);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  display: flex; align-items: center; justify-content: center;
+}
+.empty-icon svg { width: 48px; height: 48px; color: var(--accent); opacity: .6; }
+.empty-state h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 700; margin-bottom: 10px;
+}
+.empty-state p { font-size: 15px; color: var(--muted); margin-bottom: 28px; }
+.go-shop {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--primary); color: white;
+  padding: 14px 32px; border-radius: 10px;
+  font-weight: 700; font-size: 15px;
+  text-decoration: none; transition: all .25s;
+}
+.go-shop:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,31,94,.25); }
+
+/* ── GİRİŞ GEREKİYOR ────────────────────────── */
+.login-required { text-align: center; padding: 80px 20px; }
+.lr-icon {
+  width: 100px; height: 100px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 50%; margin: 0 auto 24px;
+  display: flex; align-items: center; justify-content: center;
+}
+.lr-icon svg { width: 48px; height: 48px; color: white; }
+.login-required h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 700; margin-bottom: 10px;
+}
+.login-required p { font-size: 15px; color: var(--muted); margin-bottom: 28px; }
+.btn-login {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--primary); color: white;
+  padding: 14px 32px; border-radius: 10px;
+  font-weight: 700; font-size: 15px;
+  text-decoration: none; transition: all .25s; margin-right: 10px;
+}
+.btn-login:hover { background: var(--accent); transform: translateY(-2px); }
+.btn-register {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: white; color: var(--primary);
+  padding: 14px 32px; border-radius: 10px;
+  font-weight: 700; font-size: 15px;
+  text-decoration: none; transition: all .25s;
+  border: 2px solid var(--border);
+}
+.btn-register:hover { border-color: var(--primary); background: var(--light); }
+
+/* ── TOAST ──────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--text); color: white;
+  padding: 14px 20px; border-radius: 12px;
+  font-size: 14px; font-weight: 500;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.2);
+  z-index: 9999;
+  transform: translateY(80px); opacity: 0;
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast svg  { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* ── FOOTER ─────────────────────────────────── */
+footer {
+  background: #0d1128;
+  color: rgba(255,255,255,.75);
+  padding: 40px 20px 0;
+  margin-top: 60px;
+}
+.footer-bottom {
+  max-width: 1300px; margin: 0 auto;
+  padding: 20px 0;
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 13px; opacity: .5;
+}
+.payment-icons { display: flex; gap: 8px; }
+.pay-icon {
+  background: rgba(255,255,255,.1); color: white;
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 5px;
+}
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 1100px) {
+  .cart-layout { grid-template-columns: 1fr; }
+  .summary-card { position: static; }
+  .suggested-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 768px) {
+  .cart-item { grid-template-columns: 80px 1fr; }
+  .ci-right { grid-column: 1/-1; flex-direction: row; justify-content: space-between; align-items: center; }
+  .header-inner { flex-wrap: wrap; }
+  .steps { gap: 4px; }
+  .step span { display: none; }
+  .suggested-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 480px) {
+  .cart-item { grid-template-columns: 1fr; }
+  .ci-img { width: 100%; height: 180px; border-radius: 10px; }
+  .ci-right { flex-direction: row; justify-content: space-between; }
+  .suggested-grid { grid-template-columns: 1fr 1fr; }
+}

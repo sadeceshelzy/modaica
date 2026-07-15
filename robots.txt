@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /modaica/api/
+Disallow: /modaica/panel/
+Disallow: /modaica/admin/
+Disallow: /modaica/hesabim.html
+Disallow: /modaica/sepet.html
+Disallow: /modaica/odeme.html
+
+Sitemap: https://modaica.com/modaica/sitemap.xml

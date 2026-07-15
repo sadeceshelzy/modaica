@@ -1,0 +1,392 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr">
+
+<head>
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#1a1f5e">
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Admin Panel ? MODAICA</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/admin.css">
+
+    <script src="js/seo.js"></script>
+    <script>SEO.init({ title:'Sayfa Adı', desc:'Açıklama' });</script>
+</head>
+
+<body>
+
+<!-- G?R? EKRANI -->
+
+<div id="loginScreen" class="login-screen">
+
+  <div class="login-card">
+
+    <div class="lc-logo">MODA<span>ICA</span></div>
+
+    <div class="lc-badge"> Admin Panel</div>
+
+    <h2>Yönetici Girişi</h2>
+
+    <div id="loginError" class="alert-error" style="display:none;"></div>
+
+    <div class="field"><label>E-posta</label><input type="email" id="loginEmail" placeholder="admin@modaica.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+
+    <div class="field"><label>Şifre</label><input type="password" id="loginPass" placeholder="????" onkeydown="if(event.key==='Enter')doLogin()"></div>
+
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">Giriş Yap</button>
+
+    <p class="login-hint">admin@modaica.com / Admin1234!</p>
+
+  </div>
+
+</div>
+
+<!-- PANEL -->
+
+<div id="panelLayout" class="panel-layout" style="display:none;">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sb-header">
+
+      <div class="sb-logo">MODA<span>ICA</span></div>
+
+      <div class="sb-sub">Admin Panel</div>
+
+    </div>
+
+    <nav class="sb-nav" id="sbNav">
+
+      <a class="ni active" data-p="dashboard"  onclick="goPage(this)"><span></span>Dashboard</a>
+
+      <div class="ng">Katalog</div>
+
+      <a class="ni" data-p="products"  onclick="goPage(this)"><span></span>Ürünler<em id="nb-lowstock"></em></a>
+
+      <a class="ni" data-p="campaigns" onclick="goPage(this)"><span></span>Kampanyalar</a>
+
+      <a class="ni" data-p="coupons"   onclick="goPage(this)"><span></span>Kuponlar</a>
+
+      <div class="ng">Sat?</div>
+
+      <a class="ni" data-p="orders"    onclick="goPage(this)"><span></span>Siparişler<em id="nb-pending-orders" class="warning"></em></a>
+
+      <a class="ni" data-p="payouts"   onclick="goPage(this)"><span></span>Ödeme Talepleri</a>
+
+      <div class="ng">Topluluk</div>
+
+      <a class="ni" data-p="users"     onclick="goPage(this)"><span></span>Kullanıcılar</a>
+
+      <a class="ni" data-p="vendors"   onclick="goPage(this)"><span></span>Satıcılar<em id="nb-vendors" class="warning"></em></a>
+
+      <a class="ni" data-p="reviews"   onclick="goPage(this)"><span></span>Yorumlar</a>
+
+      <div class="ng">Sistem</div>
+
+      <a class="ni" data-p="activity"  onclick="goPage(this)"><span></span>Aktivite Logu</a>
+
+      <a class="ni" data-p="settings"  onclick="goPage(this)"><span></span>Ayarlar</a>
+
+    </nav>
+
+    <div class="sb-foot">
+
+      <div class="sb-user" id="sbUser"></div>
+
+      <button onclick="logout()"> Çıkış</button>
+
+    </div>
+
+  </aside>
+
+  <main class="main-area">
+
+    <div class="top-bar">
+
+      <button class="burger" onclick="document.getElementById('sidebar').classList.toggle('open')"></button>
+
+      <h2 id="tbTitle">Dashboard</h2>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-left:auto;">
+
+        <span id="tbClock" style="font-size:13px;color:#6b7280;"></span>
+
+        <a href="anasayfa.html" target="_blank" class="btn-outline-sm"> Siteyi Gör</a>
+
+      </div>
+
+    </div>
+
+    <!-- DASHBOARD -->
+
+    <div id="p-dashboard" class="pg active">
+
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="two-col">
+
+        <div class="card">
+
+          <div class="card-title"> 30 Günlük Gelir</div>
+
+          <canvas id="revenueChart" height="240"></canvas>
+
+        </div>
+
+        <div class="card">
+
+          <div class="card-title"> Sipariş Dağılım</div>
+
+          <div id="orderDist" style="padding:8px 0;"></div>
+
+        </div>
+
+      </div>
+
+      <div class="two-col">
+
+        <div class="card">
+
+          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+
+            Son Siparişler <button class="btn-sm" onclick="goPage(document.querySelector('[data-p=orders]'))">Tümü</button>
+
+          </div>
+
+          <div id="latestOrders"></div>
+
+        </div>
+
+        <div class="card">
+
+          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+
+            Yeni Satıcılar <button class="btn-sm" onclick="goPage(document.querySelector('[data-p=vendors]'))">Tümü</button>
+
+          </div>
+
+          <div id="latestVendors"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ÜrünLER -->
+
+    <div id="p-products" class="pg">
+
+      <div class="ph"><h1>Ürün Yönetimi</h1><button class="btn-primary" onclick="openProducmodal(null)">+ Yeni Ürün</button></div>
+
+      <div class="filter-row">
+
+        <input class="fi" id="pSearch" placeholder="Ad, SKU veya marka..." oninput="clearTimer('pt');ptimer=setTimeout(loadProducts,400)">
+
+        <select class="fi" id="pDept" onchange="loadProducts()"><option value="">Tüm Departmanlar</option><option value="erkek"> ?? Erkek</option><option value="Kadın"> ?? Kadın</option><option value="elektronik"> ?? Elektronik</option><option value="ev"> Ev</option><option value="spor"> ? Spor</option><option value="kozmetik"> ?? Kozmetik</option></select>
+
+        <select class="fi" id="pActive" onchange="loadProducts()"><option value="">Tüm Durum</option><option value="1">Aktif</option><option value="0">Pasif</option></select>
+
+      </div>
+
+      <div class="table-wrap"><table class="dt"><thead><tr><th>Ürün</th><th>SKU</th><th>Fiyat</th><th>Stok</th><th>Dept.</th><th>Durum</th><th style="width:100px">İşlem</th></tr></thead><tbody id="pBody"></tbody></table></div>
+
+      <div class="pager" id="pPager"></div>
+
+    </div>
+
+    <!-- S?PAR?LER -->
+
+    <div id="p-orders" class="pg">
+
+      <div class="ph"><h1>Sipariş Yönetimi</h1></div>
+
+      <div class="filter-row">
+
+        <input class="fi" id="oSearch" placeholder="Sipariş no veya Müşteri..." oninput="clearTimer('ot');otimer=setTimeout(loadOrders,400)">
+
+        <select class="fi" id="oStatus" onchange="loadOrders()"><option value="">Tüm Durumlar</option><option value="pending"> Bekliyor</option><option value="preparing"> Hazırlanıyor</option><option value="shipping"> Kargoda</option><option value="delivered"> Teslim</option><option value="cancelled"> İptal</option></select>
+
+      </div>
+
+      <div class="table-wrap"><table class="dt"><thead><tr><th>Sipariş No</th><th>Müşteri</th><th>Tutar</th><th>Durum</th><th>Tarih</th><th style="width:80px">İşlem</th></tr></thead><tbody id="oBody"></tbody></table></div>
+
+      <div class="pager" id="oPager"></div>
+
+    </div>
+
+    <!-- KULLANICILAR -->
+
+    <div id="p-users" class="pg">
+
+      <div class="ph"><h1>Kullanıcı Yönetimi</h1></div>
+
+      <div class="filter-row">
+
+        <input class="fi" id="uSearch" placeholder="İsim veya e-posta..." oninput="clearTimer('ut');utimer=setTimeout(loadUsers,400)">
+
+        <select class="fi" id="uActive" onchange="loadUsers()"><option value="">Tüm?</option><option value="1">Aktif</option><option value="0">Pasif</option></select>
+
+      </div>
+
+      <div class="table-wrap"><table class="dt"><thead><tr><th>Kullanıcı</th><th>E-posta</th><th>Telefon</th><th>Puan</th><th>Seviye</th><th>Durum</th><th>Kayıt</th><th style="width:80px">İşlem</th></tr></thead><tbody id="uBody"></tbody></table></div>
+
+      <div class="pager" id="uPager"></div>
+
+    </div>
+
+    <!-- SatıcıLAR -->
+
+    <div id="p-vendors" class="pg">
+
+      <div class="ph"><h1>Satıcı Yönetimi</h1></div>
+
+      <div class="filter-row">
+
+        <input class="fi" id="vSearch" placeholder="Satıcı ad?, Mağaza veya e-posta..." oninput="clearTimer('vt');vtimer=setTimeout(loadVendors,400)">
+
+        <select class="fi" id="vStatus" onchange="loadVendors()"><option value="">Tüm Durumlar</option><option value="pending"> Onay Bekliyor</option><option value="active"> Aktif</option><option value="suspended"> Askıya Alınmış</option><option value="rejected"> Reddedilmiş</option></select>
+
+      </div>
+
+      <div class="table-wrap"><table class="dt"><thead><tr><th>Satıcı</th><th>Mağaza</th><th>Komisyon</th><th>Bakiye</th><th>Durum</th><th>Kayıt</th><th style="width:80px">İşlem</th></tr></thead><tbody id="vBody"></tbody></table></div>
+
+      <div class="pager" id="vPager"></div>
+
+    </div>
+
+    <!-- KUPONLAR -->
+
+    <div id="p-coupons" class="pg">
+
+      <div class="ph"><h1>Kupon Yönetimi</h1><button class="btn-primary" onclick="openCouponModal(null)">+ Yeni Kupon</button></div>
+
+      <div class="table-wrap"><table class="dt"><thead><tr><th>Kod</th><th>İndirim</th><th>Min. Tutar</th><th>Kullanım</th><th>Bitiş</th><th>Durum</th><th style="width:80px">İşlem</th></tr></thead><tbody id="cBody"></tbody></table></div>
+
+      <div class="pager" id="cPager"></div>
+
+    </div>
+
+    <!-- KAMPANYALAR -->
+
+    <div id="p-campaigns" class="pg">
+
+      <div class="ph"><h1>Kampanya Yönetimi</h1><button class="btn-primary" onclick="openCampaiGünModal(null)">+ Yeni Kampanya</button></div>
+
+      <div class="table-wrap"><table class="dt"><thead><tr><th>Başlık</th><th>İndirim</th><th>Hedef</th><th>Başlangıç</th><th>Bitiş</th><th>Durum</th><th style="width:80px">İşlem</th></tr></thead><tbody id="camBody"></tbody></table></div>
+
+    </div>
+
+    <!-- YORUMLAR -->
+
+    <div id="p-reviews" class="pg">
+
+      <div class="ph"><h1>Yorum Moderasyonu</h1></div>
+
+      <div class="filter-row">
+
+        <select class="fi" id="rApproved" onchange="loadReviews()"><option value="">Tüm?</option><option value="1">Onaylı</option><option value="0">Onay Bekliyor</option></select>
+
+      </div>
+
+      <div class="table-wrap"><table class="dt"><thead><tr><th>Kullanıcı</th><th>Ürün</th><th>Puan</th><th>Yorum</th><th>Tarih</th><th style="width:100px">İşlem</th></tr></thead><tbody id="rBody"></tbody></table></div>
+
+      <div class="pager" id="rPager"></div>
+
+    </div>
+
+    <!-- Ödeme TALEPLER? -->
+
+    <div id="p-payouts" class="pg">
+
+      <div class="ph"><h1>Ödeme Talepleri</h1></div>
+
+      <div class="filter-row">
+
+        <select class="fi" id="payStatus" onchange="loadPayouts()"><option value="">Tüm?</option><option value="pending"> Bekliyor</option><option value="processing"> İşlemde</option><option value="paid"> Ödendi</option><option value="rejected"> Reddedildi</option></select>
+
+      </div>
+
+      <div class="table-wrap"><table class="dt"><thead><tr><th>Satıcı</th><th>Tutar</th><th>Y?ntem</th><th>Durum</th><th>Talep Tarihi</th><th style="width:80px">İşlem</th></tr></thead><tbody id="payBody"></tbody></table></div>
+
+      <div class="pager" id="payPager"></div>
+
+    </div>
+
+    <!-- AKT?V?TE LOGU -->
+
+    <div id="p-activity" class="pg">
+
+      <div class="ph"><h1>Aktivite Logu</h1></div>
+
+      <div class="table-wrap"><table class="dt"><thead><tr><th>Aktör</th><th>Tip</th><th>İşlem</th><th>Detay</th><th>IP</th><th>Tarih</th></tr></thead><tbody id="actBody"></tbody></table></div>
+
+      <div class="pager" id="actPager"></div>
+
+    </div>
+
+    <!-- AYARLAR -->
+
+    <div id="p-settings" class="pg">
+
+      <div class="ph"><h1>Site Ayarları</h1></div>
+
+      <div class="settings-form" id="settingsForm"></div>
+
+      <div style="margin-top:24px;"><button class="btn-primary" onclick="saveSettings()"> Kaydet</button></div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<!-- MODAL -->
+
+<div id="modal" class="modal-overlay" onclick="if(event.target===this)closeModal()" style="display:none;">
+
+  <div class="modal-box">
+
+    <div class="modal-head"><h3 id="mTitle"></h3><button onclick="closeModal()"></button></div>
+
+    <div id="mBody" class="modal-body"></div>
+
+    <div id="mFoot" class="modal-foot"></div>
+
+  </div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<script src="js/admin.js"></script>
+
+  
+
+  <div id="chat-root"></div>
+<script src="js/smart-chat.js"></script>
+<script>new SmartChat('chat-root');</script>
+
+<script src="js/pwa-init.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,583 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr">
+
+<head>
+
+  <link rel="manifest" href="manifest.json">
+
+  <meta name="theme-color" content="#1a1f5e">
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <title>Satıcı Paneli MODAICA</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/satici-panel.css">
+
+  <script src="js/seo.js"></script>
+  <script>SEO.init({ title: 'Sayfa Adı', desc: 'Açıklama' });</script>
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+
+  <div class="topbar">
+    <span>YENISEZON</span> kodu ile %15 İndirim — <span>500 TL ve üzeri</span>
+  </div>
+
+  <!-- HEADER -->
+
+  <header>
+
+    <div class="header-inner">
+
+      <a href="anasayfa.html" class="logo">MODA<span>ICA</span></a>
+
+      <div class="panel-breadcrumb">
+        <span></span>
+        <span id="shopNameHeader">Satıcı Paneli</span>
+      </div>
+
+      <div class="header-icons">
+
+        <a href="anasayfa.html" class="icon-btn">
+
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+
+            <polyline stroke-linecap="round" stroke-linejoin="round" stroke-width="2" points="9 22 9 12 15 12 15 22" />
+
+          </svg>
+
+          <span>Siteye Dön</span>
+
+        </a>
+
+        <button class="icon-btn" onclick="doLogout()">
+
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+
+          </svg>
+
+          <span>Çıkış</span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- NAV -->
+
+  <nav>
+
+    <div class="nav-inner">
+
+      <div class="nav-item"><a href="erkek.html"> 👨 Erkek</a></div>
+
+      <div class="nav-item"><a href="kadin.html"> 👩 Kadın</a></div>
+
+      <div class="nav-item"><a href="elektronik.html"> 💻 Elektronik</a></div>
+
+      <div class="nav-item"><a href="ev.html"> 🏠 Ev & Yaşam</a></div>
+
+      <div class="nav-item"><a href="spor.html"> ⚽ Spor</a></div>
+
+      <div class="nav-item"><a href="kozmetik.html"> 💄 Kozmetik</a></div>
+
+      <div class="nav-item active-nav" style="margin-left:auto;">
+
+        <a href="satici-panel.html"> Satıcı Paneli</a>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+  <!-- PANEL LAYOUT -->
+
+  <div class="panel-wrap">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+      <div class="sb-vendor" id="sbVendorInfo">
+
+        <div class="sb-emoji" id="sbEmoji"></div>
+
+        <div>
+
+          <div class="sb-name" id="sbShopName">Mağaza</div>
+
+          <div class="sb-rate" id="sbRate">%10 komisyon</div>
+
+        </div>
+
+      </div>
+
+      <nav class="sb-nav">
+
+        <a class="ni active" data-p="dashboard" onclick="goPage(this)"><span></span>Dashboard</a>
+
+        <div class="ng">Mağazam</div>
+
+        <a class="ni" data-p="products" onclick="goPage(this)"><span>📦</span>Ürünlerim<em id="nb-low"
+            style="display:none"></em></a>
+        <a class="ni" data-p="orders" onclick="goPage(this)"><span>🛒</span>Siparişlerim</a>
+        <div class="ng">Finans</div>
+
+        <a class="ni" data-p="eaÜrünings" onclick="goPage(this)"><span>💰</span>Kazançlarım</a>
+        <a class="ni" data-p="payouts" onclick="goPage(this)"><span>💳</span>Ödeme Talepleri</a>
+
+        <div class="ng">Değerlendirmeler</div>
+
+        <a class="ni" data-p="reviews" onclick="goPage(this)"><span>⭐</span>Yorumlar</a>
+        <div class="ng">Hesap</div>
+        <a class="ni" data-p="profile" onclick="goPage(this)"><span>👤</span>Profil & Ayarlar</a>
+      </nav>
+      <button class="sb-logout" onclick="doLogout()">🚪 Çıkış Yap</button>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="panel-main">
+
+      <div class="panel-topbar">
+
+        <button class="burger" onclick="document.getElementById('sidebar').classList.toggle('open')"></button>
+
+        <h2 id="pageTitle">Dashboard</h2>
+
+        <span id="panelClock" class="panel-clock"></span>
+
+      </div>
+
+      <!-- DASHBOARD -->
+
+      <div id="p-dashboard" class="pg active">
+
+        <div class="pg-header">
+
+          <h1 id="welcomeMsg">Hoş Geldiniz!</h1>
+
+        </div>
+
+        <div class="stat-grid" id="dashStats"></div>
+
+        <div class="two-col">
+
+          <div class="card">
+
+            <div class="card-title"> 30 Günlük Satışlar</div>
+
+            <canvas id="salesChart" height="220"></canvas>
+
+          </div>
+
+          <div class="card">
+
+            <div class="card-title"> En Çok Satanlar</div>
+
+            <div id="topProducts"></div>
+
+          </div>
+
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+
+          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+
+            Son Siparişler
+
+            <button class="btn-sm" onclick="goPage(document.querySelector('[data-p=orders]'))">Tümü</button>
+
+          </div>
+
+          <div id="latestSales"></div>
+
+        </div>
+
+      </div>
+
+      <!-- Ürünler -->
+
+      <div id="p-products" class="pg">
+
+        <div class="pg-header">
+
+          <h1>Ürünlerim</h1>
+
+          <button class="btn-primary" onclick="openProducTümodal(null)">+ Ürünler</button>
+
+        </div>
+
+        <div class="filter-row">
+
+          <input class="fi" id="pSearch" placeholder="Ürün ad? veya SKU..."
+            oninput="clearTimeout(timers.p);timers.p=setTimeout(loadProducts,400)">
+
+          <select class="fi" id="pActive" onchange="loadProducts()">
+
+            <option value="">Tüm Durum</option>
+
+            <option value="1">Aktif</option>
+
+            <option value="0">Pasif</option>
+
+          </select>
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table class="dt">
+
+            <thead>
+
+              <tr>
+
+                <th>Ürün</th>
+
+                <th>SKU</th>
+
+                <th>Fiyat</th>
+
+                <th>Stok</th>
+
+                <th>Durum</th>
+
+                <th>İşlem</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="pBody"></tbody>
+
+          </table>
+
+        </div>
+
+        <div class="pager" id="pPager"></div>
+
+      </div>
+
+      <!-- S?PAR?LER -->
+
+      <div id="p-orders" class="pg">
+
+        <div class="pg-header">
+
+          <h1>Siparişlerim</h1>
+
+        </div>
+
+        <div class="filter-row">
+
+          <select class="fi" id="oStatus" onchange="loadOrders()">
+
+            <option value="">Tüm Durumlar</option>
+
+            <option value="pending"> Bekliyor</option>
+
+            <option value="confirmed"> Onaylandı</option>
+
+            <option value="shipped"> Kargoda</option>
+
+            <option value="delivered"> Teslim</option>
+
+            <option value="refunded"> İade</option>
+
+          </select>
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table class="dt">
+
+            <thead>
+
+              <tr>
+
+                <th>Sipariş No</th>
+
+                <th>Ürün</th>
+
+                <th>Adet</th>
+
+                <th>Brüt</th>
+
+                <th>Komisyon</th>
+
+                <th>Net</th>
+
+                <th>Durum</th>
+
+                <th>Tarih</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="oBody"></tbody>
+
+          </table>
+
+        </div>
+
+        <div class="pager" id="oPager"></div>
+
+      </div>
+
+      <!-- KAZAN?LAR -->
+
+      <div id="p-eaÜrünings" class="pg">
+
+        <div class="pg-header">
+
+          <h1>Kazanç Özeti</h1>
+
+          <select class="fi" id="ePeriod" onchange="loÝÝİadeaÜrünings()">
+
+            <option value="week">Bu Hafta</option>
+
+            <option value="month" selected>Bu Ay</option>
+
+            <option value="Üyear">Bu Yıl</option>
+
+          </select>
+
+        </div>
+
+        <div class="stat-grid" id="eStats"></div>
+
+        <div class="two-col">
+
+          <div class="card">
+
+            <div class="card-title"> Kazanç Grafiği</div>
+
+            <canvas id="eaÜrüningsChart" height="220"></canvas>
+
+          </div>
+
+          <div class="card">
+
+            <div class="card-title"> Son Ödemeler</div>
+
+            <div id="eaÜrüningsPayouts"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Ödeme TALEPLER? -->
+
+      <div id="p-payouts" class="pg">
+
+        <div class="pg-header">
+
+          <h1>Ödeme Talepleri</h1>
+
+          <button class="btn-primary" onclick="openPayouTümodal()"> Ödeme Talep Et</button>
+
+        </div>
+
+        <div class="balance-box" id="balanceBox"></div>
+
+        <div class="table-wrap" style="margin-top:16px;">
+
+          <table class="dt">
+
+            <thead>
+
+              <tr>
+
+                <th>Tutar</th>
+
+                <th>Yöntem</th>
+
+                <th>Durum</th>
+
+                <th>Talep Tarihi</th>
+
+                <th>Ödeme Tarihi</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="payBody"></tbody>
+
+          </table>
+
+        </div>
+
+        <div class="pager" id="payPager"></div>
+
+      </div>
+
+      <!-- YORUMLAR -->
+
+      <div id="p-reviews" class="pg">
+
+        <div class="pg-header">
+
+          <h1>Ürün Yorumları</h1>
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table class="dt">
+            <h1>Ürün Yorumları</h1>
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table class="dt">
+
+            <thead>
+
+              <tr>
+
+                <th>Kullanıcılar</th>
+
+                <th>Ürün</th>
+
+                <th>Puan</th>
+
+                <th>Yorum</th>
+
+                <th>Tarih</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="rBody"></tbody>
+
+          </table>
+
+        </div>
+
+        <div class="pager" id="rPager"></div>
+
+      </div>
+
+      <!-- PROF?L -->
+
+      <div id="p-profile" class="pg">
+
+        <div class="pg-header">
+
+          <h1>Profil & Ayarlar</h1>
+
+        </div>
+
+        <div class="two-col">
+
+          <div class="card">
+
+            <div class="card-title"> Mağaza Bilgileri</div>
+
+            <div id="profileFields"></div>
+
+            <button class="btn-primary" style="margin-top:16px;" onclick="saveProfile()"> Kaydet</button>
+
+          </div>
+
+          <div class="card">
+
+            <div class="card-title"> Banka Bilgileri</div>
+
+            <div class="mfield"><label>Banka Adı</label><input id="bankName" placeholder="Ziraat, Garanti..."></div>
+
+            <div class="mfield"><label>IBAN</label><input id="bankIban" placeholder="TR00 0000 0000 0000 0000 0000 00">
+
+            </div>
+
+            <button class="btn-primary" onclick="saveBank()">Kaydet</button>
+
+            <hr style="margin:24px 0;border:none;border-top:1px solid var(--border);">
+
+            <div class="card-title" style="margin-bottom:16px;"> Şifre Değiştir</div>
+
+            <div class="mfield"><label>Üyeni Şifre</label><input type="password" id="newPass"
+                placeholder="En az 8 karakter"></div>
+
+            <div class="mfield"><label>Şifre Tekrar</label><input type="password" id="newPass2"
+                placeholder="Şifreyi tekrar girin"></div>
+
+            <button class="btn-primary" onclick="changePass()">Şifreyi Güncelle</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL -->
+
+  <div id="modal" class="modal-overlay" onclick="if(event.target===this)closeModal()" style="display:none;">
+
+    <div class="modal-box">
+
+      <div class="modal-head">
+
+        <h3 id="mTitle"></h3><button onclick="closeModal()"></button>
+
+      </div>
+
+      <div id="mBody" class="modal-body"></div>
+
+      <div id="mFoot" class="modal-foot"></div>
+
+    </div>
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <script src="js/product-gallery.js"></script>
+  <script src="js/satici-panel.js"></script>
+
+
+
+  <div id="chat-root"></div>
+  <script src="js/smart-chat.js"></script>
+  <script>new SmartChat('chat-root');</script>
+
+  <script src="js/pwa-init.js"></script>
+
+</body>
+
+</html>

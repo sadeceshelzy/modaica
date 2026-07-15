@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sipariş Tamamla — MODAICA</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#1a1f5e;--accent:#2d3aaa;--accent2:#e63946;--vendor:#166834;--gold:#f4a226;--surface:#f8f9fc;--border:#e5e7eb;--muted:#6b7280;--text:#1c1c2e;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);}
+
+/* ── HEADER ── */
+header{background:white;border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--primary);text-decoration:none;}
+.logo span{color:var(--accent2);}
+.header-secure{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--vendor);font-weight:600;}
+
+/* ── STEP BAR ── */
+.step-bar{background:white;border-bottom:1px solid var(--border);padding:16px 20px;}
+.step-bar-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:0;}
+.step{display:flex;align-items:center;gap:8px;flex:1;}
+.step-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;transition:all .3s;flex-shrink:0;}
+.step.done .step-num{background:var(--vendor);color:white;}
+.step.active .step-num{background:var(--primary);color:white;}
+.step.pending .step-num{background:var(--border);color:var(--muted);}
+.step-label{font-size:13px;font-weight:600;color:var(--muted);}
+.step.active .step-label,.step.done .step-label{color:var(--text);}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 8px;transition:background .3s;}
+.step.done + .step-line,.step.done + * + .step-line{background:var(--vendor);}
+
+/* ── LAYOUT ── */
+.checkout-layout{max-width:1000px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;}
+@media(max-width:768px){.checkout-layout{grid-template-columns:1fr;}.order-summary-sticky{order:-1;}}
+
+/* ── CARD ── */
+.ck-card{background:white;border-radius:16px;border:1px solid var(--border);padding:24px;margin-bottom:16px;}
+.ck-card-title{font-size:16px;font-weight:700;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid .span2{grid-column:1/-1;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.field input,.field select,.field textarea{border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;background:white;}
+.field input:focus,.field select:focus{border-color:var(--accent);}
+.field input.err,.field select.err{border-color:var(--accent2);}
+.field .err-msg{font-size:11px;color:var(--accent2);}
+
+/* ── ADDRESS CARDS ── */
+.addr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.addr-card{border:2px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;position:relative;}
+.addr-card:hover{border-color:#9ca3af;}
+.addr-card.selected{border-color:var(--primary);background:rgba(26,31,94,.02);}
+.addr-card-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.addr-card-body{font-size:12px;color:var(--muted);line-height:1.5;}
+.addr-default{position:absolute;top:8px;right:8px;background:var(--primary);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;}
+.addr-radio{position:absolute;top:12px;left:12px;}
+.new-addr-btn{border:2px dashed var(--border);border-radius:12px;padding:14px;cursor:pointer;text-align:center;color:var(--muted);font-size:13px;font-weight:600;transition:all .2s;background:none;width:100%;font-family:inherit;}
+.new-addr-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── KARGO ── */
+.cargo-options{display:flex;flex-direction:column;gap:10px;}
+.cargo-opt{border:2px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s;}
+.cargo-opt:hover{border-color:#9ca3af;}
+.cargo-opt.selected{border-color:var(--primary);background:rgba(26,31,94,.02);}
+.cargo-opt-info{flex:1;}
+.cargo-opt-name{font-size:14px;font-weight:700;}
+.cargo-opt-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.cargo-opt-price{font-size:15px;font-weight:700;color:var(--primary);}
+.cargo-free{color:var(--vendor);}
+
+/* ── ÖDEME ── */
+.payment-methods{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.pm-btn{border:2px solid var(--border);border-radius:10px;padding:10px 16px;cursor:pointer;font-size:13px;font-weight:600;background:none;font-family:inherit;display:flex;align-items:center;gap:7px;transition:all .2s;}
+.pm-btn:hover{border-color:#9ca3af;}
+.pm-btn.selected{border-color:var(--primary);color:var(--primary);background:rgba(26,31,94,.04);}
+.card-preview{background:linear-gradient(135deg,#1a1f5e,#2d3aaa);border-radius:14px;padding:18px 22px;color:white;margin-bottom:18px;min-height:130px;position:relative;}
+.card-preview-num{font-size:17px;letter-spacing:3px;margin:16px 0;font-family:monospace;}
+.card-preview-bottom{display:flex;gap:24px;font-size:12px;}
+.card-preview-label{opacity:.6;font-size:9px;text-transform:uppercase;margin-bottom:2px;}
+.card-chip{font-size:20px;opacity:.7;}
+
+/* ── ÖZET ── */
+.order-summary-sticky{position:sticky;top:16px;}
+.summary-items{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);max-height:280px;overflow-y:auto;}
+.sum-item{display:flex;align-items:center;gap:10px;}
+.sum-item-emoji{width:44px;height:44px;background:var(--surface);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.sum-item-info{flex:1;}
+.sum-item-name{font-size:13px;font-weight:600;line-height:1.3;}
+.sum-item-sub{font-size:11px;color:var(--muted);}
+.sum-item-price{font-size:13px;font-weight:700;white-space:nowrap;}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;padding:3px 0;}
+.sum-row.total{font-size:16px;font-weight:700;border-top:1px solid var(--border);padding-top:12px;margin-top:6px;}
+.sum-row.discount{color:var(--vendor);}
+.sum-row.free{color:var(--vendor);}
+.coupon-row{display:flex;gap:8px;margin:12px 0;}
+.coupon-row input{flex:1;border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;font-size:13px;outline:none;font-family:inherit;}
+.coupon-row input:focus{border-color:var(--accent);}
+.coupon-row button{background:var(--primary);color:white;border:none;padding:10px 16px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.coupon-applied{display:flex;align-items:center;gap:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:9px 13px;font-size:13px;color:var(--vendor);font-weight:600;}
+.coupon-applied button{background:none;border:none;cursor:pointer;color:var(--muted);margin-left:auto;font-size:16px;}
+
+/* ── BUTONLAR ── */
+.btn-primary{background:var(--primary);color:white;border:none;padding:14px 24px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;width:100%;}
+.btn-primary:hover{background:var(--accent);}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;}
+.btn-outline{background:none;border:1.5px solid var(--border);padding:11px 20px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary);}
+
+/* ── STEP ACTIONS ── */
+.step-actions{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px;}
+
+/* ── SUCCESS ── */
+.success-screen{text-align:center;padding:48px 24px;}
+.success-icon{font-size:72px;margin-bottom:16px;}
+.success-code{background:var(--surface);border-radius:12px;padding:14px 20px;display:inline-block;margin:16px 0;}
+.success-code span{font-size:22px;font-weight:900;color:var(--primary);letter-spacing:1px;}
+.success-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:28px 0;text-align:center;}
+.ss-item{padding:14px 10px;background:var(--surface);border-radius:12px;border:1px solid var(--border);}
+.ss-item.done{border-color:var(--vendor);background:#f0fdf4;}
+.ss-emoji{font-size:24px;margin-bottom:6px;}
+.ss-label{font-size:12px;font-weight:600;color:var(--muted);}
+.ss-item.done .ss-label{color:var(--vendor);}
+
+/* ── ALERT ── */
+.alert{padding:12px 16px;border-radius:10px;font-size:14px;margin-bottom:14px;}
+.alert.error{background:#fff5f5;border:1px solid #fecaca;color:var(--accent2);}
+.alert.info{background:#fef9c3;border:1px solid #fde68a;color:#92400e;}
+
+/* IL/ILCE ── */
+.city-district-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="anasayfa.html" class="logo">MODA<span>ICA</span></a>
+  <div class="header-secure">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+    </svg>
+    256-bit SSL Güvenli Ödeme
+  </div>
+</header>
+
+<!-- STEP BAR -->
+<div class="step-bar">
+  <div class="step-bar-inner">
+    <div class="step active" id="step-bar-1">
+      <div class="step-num">1</div>
+      <div class="step-label">Adres</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step pending" id="step-bar-2">
+      <div class="step-num">2</div>
+      <div class="step-label">Kargo</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step pending" id="step-bar-3">
+      <div class="step-num">3</div>
+      <div class="step-label">Ödeme</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step pending" id="step-bar-4">
+      <div class="step-num">4</div>
+      <div class="step-label">Onay</div>
+    </div>
+  </div>
+</div>
+
+<div class="checkout-layout">
+  <!-- SOL: Adımlar -->
+  <div id="steps-container">
+
+    <!-- ── ADIM 1: ADRES ── -->
+    <div id="step-1" class="step-content">
+      <div class="ck-card">
+        <div class="ck-card-title">📍 Teslimat Adresi</div>
+        <div id="addr-list" class="addr-grid"></div>
+        <button class="new-addr-btn" id="newAddrBtn" onclick="checkout.toggleNewAddrForm()">+ Yeni Adres Ekle</button>
+        <div id="new-addr-form" style="display:none;margin-top:16px;">
+          <div class="form-grid">
+            <div class="field span2"><label>Adres Başlığı *</label><input id="addr-title" placeholder="Ev, İş..."></div>
+            <div class="field"><label>Ad Soyad *</label><input id="addr-name" placeholder="Adınız Soyadınız"></div>
+            <div class="field"><label>Telefon *</label><input id="addr-phone" placeholder="+90 5__ ___ __ __" type="tel"></div>
+            <div class="city-district-row span2">
+              <div class="field"><label>İl *</label>
+                <select id="addr-city" onchange="checkout.loadDistricts(this.value)">
+                  <option value="">İl seçin...</option>
+                </select>
+              </div>
+              <div class="field"><label>İlçe *</label>
+                <select id="addr-district"><option value="">Önce il seçin</option></select>
+              </div>
+            </div>
+            <div class="field span2"><label>Adres *</label><textarea id="addr-line" rows="2" placeholder="Mahalle, sokak, bina, daire..."></textarea></div>
+            <div class="field"><label>Posta Kodu</label><input id="addr-zip" placeholder="34000"></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:14px;">
+            <button class="btn-outline" onclick="checkout.toggleNewAddrForm()">İptal</button>
+            <button class="btn-primary" style="flex:1" onclick="checkout.saveAddress()">Adresi Kaydet</button>
+          </div>
+        </div>
+      </div>
+      <div class="step-actions">
+        <a href="sepet.html" class="btn-outline">← Sepete Dön</a>
+        <button class="btn-primary" style="max-width:200px;" onclick="checkout.goStep(2)">Kargoyu Seç →</button>
+      </div>
+    </div>
+
+    <!-- ── ADIM 2: KARGO ── -->
+    <div id="step-2" class="step-content" style="display:none;">
+      <div class="ck-card">
+        <div class="ck-card-title">🚚 Kargo Seçeneği</div>
+        <div id="cargo-options"></div>
+      </div>
+      <div class="step-actions">
+        <button class="btn-outline" onclick="checkout.goStep(1)">← Adrese Dön</button>
+        <button class="btn-primary" style="max-width:200px;" onclick="checkout.goStep(3)">Ödemeye Geç →</button>
+      </div>
+    </div>
+
+    <!-- ── ADIM 3: ÖDEME ── -->
+    <div id="step-3" class="step-content" style="display:none;">
+      <div class="ck-card">
+        <div class="ck-card-title">💳 Ödeme Yöntemi</div>
+        <div class="payment-methods">
+          <button class="pm-btn selected" data-method="card" onclick="checkout.selectPayment('card',this)">💳 Kredi/Banka Kartı</button>
+          <button class="pm-btn" data-method="transfer" onclick="checkout.selectPayment('transfer',this)">🏦 Havale/EFT</button>
+          <button class="pm-btn" data-method="cash" onclick="checkout.selectPayment('cash',this)">💵 Kapıda Ödeme</button>
+        </div>
+
+        <!-- Kart Formu -->
+        <div id="card-form">
+          <div class="card-preview" id="cardPreview">
+            <div class="card-chip">▬▬</div>
+            <div class="card-preview-num" id="cpNum">•••• •••• •••• ••••</div>
+            <div class="card-preview-bottom">
+              <div><div class="card-preview-label">Kart Sahibi</div><div id="cpName">AD SOYAD</div></div>
+              <div><div class="card-preview-label">Son Kullanma</div><div id="cpExp">AA/YY</div></div>
+            </div>
+          </div>
+          <div id="card-alert" class="alert error" style="display:none;"></div>
+          <div class="form-grid">
+            <div class="field span2">
+              <label>Kart Numarası *</label>
+              <input id="cardNum" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric">
+            </div>
+            <div class="field span2">
+              <label>Kart Üzerindeki Ad *</label>
+              <input id="cardName" placeholder="AD SOYAD" style="text-transform:uppercase">
+            </div>
+            <div class="field">
+              <label>Son Kullanma *</label>
+              <input id="cardExp" placeholder="AA/YY" maxlength="5" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label>CVV *</label>
+              <input id="cardCvv" placeholder="•••" maxlength="4" type="password" inputmode="numeric">
+            </div>
+          </div>
+        </div>
+
+        <!-- Havale Bilgisi -->
+        <div id="transfer-info" style="display:none;">
+          <div class="alert info">Aşağıdaki IBAN'a sipariş tutarını havale edin. Açıklama kısmına sipariş numaranızı yazın.</div>
+          <div style="background:var(--surface);border-radius:10px;padding:16px;font-size:14px;">
+            <div style="margin-bottom:8px;"><strong>Banka:</strong> Ziraat Bankası</div>
+            <div style="margin-bottom:8px;"><strong>IBAN:</strong> TR00 0000 0000 0000 0000 0000 00</div>
+            <div><strong>Hesap Adı:</strong> MODAICA E-Ticaret A.Ş.</div>
+          </div>
+        </div>
+
+        <!-- Kapıda Ödeme -->
+        <div id="cash-info" style="display:none;">
+          <div class="alert info">Ürün kapınıza geldiğinde nakit veya kredi kartıyla ödeme yapabilirsiniz. +₺10 kapıda ödeme ücreti uygulanır.</div>
+        </div>
+
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+          <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;cursor:pointer;">
+            <input type="checkbox" id="saveCard" style="margin-top:2px;">
+            Bu kartı kaydet (gelecek alışverişler için)
+          </label>
+        </div>
+      </div>
+
+      <div class="ck-card">
+        <div class="ck-card-title">📝 Sipariş Notu</div>
+        <textarea class="field" id="orderNote" rows="2" placeholder="Özel bir notunuz var mı? (opsiyonel)"
+          style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:14px;font-family:inherit;outline:none;resize:none;"></textarea>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn-outline" onclick="checkout.goStep(2)">← Kargoya Dön</button>
+        <button class="btn-primary" style="max-width:220px;" id="placeOrderBtn" onclick="checkout.placeOrder()">
+          🔒 Siparişi Onayla
+        </button>
+      </div>
+    </div>
+
+    <!-- ── ADIM 4: BAŞARI ── -->
+    <div id="step-4" class="step-content" style="display:none;">
+      <div class="ck-card">
+        <div class="success-screen">
+          <div class="success-icon">🎉</div>
+          <h2 style="font-size:24px;font-weight:700;margin-bottom:8px;">Siparişiniz Alındı!</h2>
+          <p style="color:var(--muted);margin-bottom:16px;">Siparişiniz başarıyla oluşturuldu. E-postanıza onay gönderildi.</p>
+          <div class="success-code">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">SİPARİŞ NUMARASI</div>
+            <span id="successCode">—</span>
+          </div>
+          <div id="successPoints" style="display:none;background:#fef9c3;border-radius:10px;padding:12px;margin:12px 0;font-size:14px;font-weight:600;color:#92400e;"></div>
+          <div id="successDetail" style="display:none;"></div>
+          <div class="success-steps">
+            <div class="ss-item done"><div class="ss-emoji">✅</div><div class="ss-label">Sipariş Alındı</div></div>
+            <div class="ss-item"><div class="ss-emoji">📦</div><div class="ss-label">Hazırlanıyor</div></div>
+            <div class="ss-item"><div class="ss-emoji">🚚</div><div class="ss-label">Kargoda</div></div>
+            <div class="ss-item"><div class="ss-emoji">🏠</div><div class="ss-label">Teslim</div></div>
+          </div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <a href="siparis-takip.html" id="trackLink" style="background:var(--primary);color:white;padding:13px 24px;border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;">📦 Siparişi Takip Et</a>
+            <a href="anasayfa.html" style="border:1.5px solid var(--border);padding:13px 24px;border-radius:12px;text-decoration:none;font-weight:600;font-size:14px;color:var(--text);">Alışverişe Devam</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SAĞ: Sipariş Özeti -->
+  <div class="order-summary-sticky">
+    <div class="ck-card">
+      <div class="ck-card-title">🛒 Sipariş Özeti</div>
+      <div class="summary-items" id="summaryItems"></div>
+      <div class="coupon-row" id="couponRow">
+        <input id="couponCode" placeholder="Kupon kodu (YENISEZON)" style="text-transform:uppercase">
+        <button onclick="checkout.applyCoupon()">Uygula</button>
+      </div>
+      <div id="couponApplied" style="display:none;" class="coupon-applied">
+        <span>🎉</span>
+        <span id="couponAppliedText"></span>
+        <button onclick="checkout.removeCoupon()">✕</button>
+      </div>
+      <div id="summaryRows"></div>
+      <button class="btn-primary" style="margin-top:16px;" id="summaryNextBtn" onclick="checkout.summaryNext()">Devam Et →</button>
+      <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:10px;">
+        🔒 256-bit SSL şifreleme · İyzico güvencesi
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="js/checkout.js"></script>
+</body>
+</html>

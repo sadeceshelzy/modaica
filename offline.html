@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr">
+
+<head>
+
+  <link rel="manifest" href="manifest.json">
+
+  <meta name="theme-color" content="#1a1f5e">
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <title>Çevrimdışı MODAICA</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #f8f9fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+      max-width: 420px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .08);
+    }
+
+    .icon {
+      font-size: 72px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1f5e;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #6b7280;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #1a1f5e;
+      color: white;
+      padding: 13px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      background: #2d3aaa;
+    }
+
+    .cached {
+      margin-top: 24px;
+      padding: 16px;
+      background: #f8f9fc;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .cached a {
+      color: #2d3aaa;
+      font-weight: 600;
+      text-decoration: none;
+      display: block;
+      padding: 6px 0;
+      font-size: 14px;
+    }
+  </style>
+
+  <!-- Offline sayfası harici script/CSS yüklemez; tamamen bağımsız (self-contained) olmalıdır -->
+</head>
+
+<body>
+
+  <div class="card">
+
+    <div class="icon">?</div>
+
+    <h1>İnternet bağlantısı yok</h1>
+
+    <p>Şu an çevrimdışısınız. İnternet bağlantınızı kontrol edip tekrar deneyin.</p>
+
+    <button class="btn" onclick="location.reload()">🔄 Yeniden Dene</button>
+
+    <div class="cached">
+
+      <strong style="font-size:13px;color:#6b7280;display:block;margin-bottom:8px;">Önbelleğe alınan sayfalar:</strong>
+
+      <a href="/modaica/anasayfa.html">🏠 Ana Sayfa</a>
+
+      <a href="/modaica/favoriler.html">❤️ Favorilerim</a>
+
+      <a href="/modaica/sepet.html">🛒 Sepetim</a>
+
+      <a href="/modaica/hesabim.html">👤 Hesabım</a>
+
+    </div>
+
+  </div>
+
+
+</body>
+
+</html>
